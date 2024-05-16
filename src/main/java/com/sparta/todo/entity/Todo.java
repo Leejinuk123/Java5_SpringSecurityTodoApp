@@ -1,6 +1,6 @@
 package com.sparta.todo.entity;
 
-import com.sparta.todo.dto.request.TodoRequestDto;
+import com.sparta.todo.dto.request.TodoUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,16 +24,16 @@ public class Todo extends Timestamped{
     @Column(name = "password", nullable = false)
     private String password;
 
-    public Todo(TodoRequestDto todoRequestDto){
-        this.title = todoRequestDto.getTitle();
-        this.contents = todoRequestDto.getContents();
-        this.email = todoRequestDto.getEmail();
-        this.password = todoRequestDto.getPassword();
+    public Todo(TodoUpdateRequestDto todoUpdateRequestDto){
+        this.title = todoUpdateRequestDto.getTitle();
+        this.contents = todoUpdateRequestDto.getContents();
+        this.email = todoUpdateRequestDto.getEmail();
+        this.password = todoUpdateRequestDto.getPassword();
     }
 
-    public void update(TodoRequestDto todoRequestDto){
-        this.setContents(todoRequestDto.getContents());
-        this.setTitle(todoRequestDto.getTitle());
-        this.setEmail(todoRequestDto.getEmail());
+    public void update(TodoUpdateRequestDto todoUpdateRequestDto){
+        this.setContents(todoUpdateRequestDto.getContents());
+        this.setTitle(todoUpdateRequestDto.getTitle());
+        this.setEmail(todoUpdateRequestDto.getEmail());
     }
 }

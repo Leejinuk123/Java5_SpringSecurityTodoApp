@@ -1,6 +1,7 @@
 package com.sparta.todo.controller;
 
-import com.sparta.todo.dto.request.TodoRequestDto;
+import com.sparta.todo.dto.request.TodoDeleteRequestDto;
+import com.sparta.todo.dto.request.TodoUpdateRequestDto;
 import com.sparta.todo.dto.response.TodoResponseDto;
 import com.sparta.todo.service.TodoService;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class TodoController {
     }
 
     @PostMapping("/todos")
-    public TodoResponseDto createTodo(@RequestBody TodoRequestDto todoRequestDto){
-        return todoService.createTodo(todoRequestDto);
+    public TodoResponseDto createTodo(@RequestBody TodoUpdateRequestDto todoUpdateRequestDto){
+        return todoService.createTodo(todoUpdateRequestDto);
     }
     @GetMapping("/todos")
     public List<TodoResponseDto> getTodos(){
@@ -30,7 +31,11 @@ public class TodoController {
         return todoService.getTodo(id);
     }
     @PutMapping("/todos/{id}")
-    public TodoResponseDto getTodo(@PathVariable Long id, @RequestBody TodoRequestDto todoRequestDto){
-        return todoService.updateTodo(id, todoRequestDto);
+    public TodoResponseDto getTodo(@PathVariable Long id, @RequestBody TodoUpdateRequestDto todoUpdateRequestDto){
+        return todoService.updateTodo(id, todoUpdateRequestDto);
+    }
+    @DeleteMapping("/todos/{id}")
+    public Long getTodo(@PathVariable Long id, @RequestBody TodoDeleteRequestDto todoDeleteRequestDto){
+        return todoService.deleteTodo(id, todoDeleteRequestDto);
     }
 }

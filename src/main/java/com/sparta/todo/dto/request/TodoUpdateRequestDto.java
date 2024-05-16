@@ -1,9 +1,7 @@
 package com.sparta.todo.dto.request;
-
 import lombok.Getter;
-
 @Getter
-public class TodoRequestDto {
+public class TodoUpdateRequestDto {
     private String title;
     private String contents;
     private String email;
