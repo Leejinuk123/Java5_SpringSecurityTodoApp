@@ -1,7 +1,7 @@
 package com.sparta.todo.controller;
 
-import com.sparta.todo.dto.TodoRequestDto;
-import com.sparta.todo.dto.TodoResponseDto;
+import com.sparta.todo.dto.request.TodoRequestDto;
+import com.sparta.todo.dto.response.TodoResponseDto;
 import com.sparta.todo.service.TodoService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,4 +19,10 @@ public class TodoController {
     public TodoResponseDto createTodo(@RequestBody TodoRequestDto todoRequestDto){
         return todoService.createTodo(todoRequestDto);
     }
+
+    @GetMapping("/todos/{id}")
+    public TodoResponseDto getTodo(@PathVariable Long id){
+        return todoService.getTodo(id);
+    }
+
 }

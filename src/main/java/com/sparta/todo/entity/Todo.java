@@ -1,6 +1,6 @@
 package com.sparta.todo.entity;
 
-import com.sparta.todo.dto.TodoRequestDto;
+import com.sparta.todo.dto.request.TodoRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
