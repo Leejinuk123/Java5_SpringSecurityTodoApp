@@ -1,5 +1,6 @@
 package com.sparta.todo.entity;
 
+import com.sparta.todo.dto.request.TodoCreateRequestDto;
 import com.sparta.todo.dto.request.TodoUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,11 +25,11 @@ public class Todo extends Timestamped{
     @Column(name = "password", nullable = false)
     private String password;
 
-    public Todo(TodoUpdateRequestDto todoUpdateRequestDto){
-        this.title = todoUpdateRequestDto.getTitle();
-        this.contents = todoUpdateRequestDto.getContents();
-        this.email = todoUpdateRequestDto.getEmail();
-        this.password = todoUpdateRequestDto.getPassword();
+    public Todo(TodoCreateRequestDto todoCreateRequestDto){
+        this.title = todoCreateRequestDto.getTitle();
+        this.contents = todoCreateRequestDto.getContents();
+        this.email = todoCreateRequestDto.getEmail();
+        this.password = todoCreateRequestDto.getPassword();
     }
 
     public void update(TodoUpdateRequestDto todoUpdateRequestDto){

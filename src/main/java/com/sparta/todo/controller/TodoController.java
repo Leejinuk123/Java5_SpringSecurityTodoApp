@@ -1,5 +1,6 @@
 package com.sparta.todo.controller;
 
+import com.sparta.todo.dto.request.TodoCreateRequestDto;
 import com.sparta.todo.dto.request.TodoDeleteRequestDto;
 import com.sparta.todo.dto.request.TodoUpdateRequestDto;
 import com.sparta.todo.dto.response.TodoResponseDto;
@@ -19,8 +20,8 @@ public class TodoController {
     }
 
     @PostMapping("/todos")
-    public TodoResponseDto createTodo(@RequestBody TodoUpdateRequestDto todoUpdateRequestDto){
-        return todoService.createTodo(todoUpdateRequestDto);
+    public TodoResponseDto createTodo(@RequestBody TodoCreateRequestDto todoCreateRequestDto){
+        return todoService.createTodo(todoCreateRequestDto);
     }
     @GetMapping("/todos")
     public List<TodoResponseDto> getTodos(){

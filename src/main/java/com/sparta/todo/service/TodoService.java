@@ -1,5 +1,6 @@
 package com.sparta.todo.service;
 
+import com.sparta.todo.dto.request.TodoCreateRequestDto;
 import com.sparta.todo.dto.request.TodoDeleteRequestDto;
 import com.sparta.todo.dto.request.TodoUpdateRequestDto;
 import com.sparta.todo.dto.response.TodoResponseDto;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TodoService {
@@ -18,8 +20,8 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public TodoResponseDto createTodo(TodoUpdateRequestDto todoUpdateRequestDto) {
-        Todo todo = new Todo(todoUpdateRequestDto);
+    public TodoResponseDto createTodo(TodoCreateRequestDto todoCreateRequestDto) {
+        Todo todo = new Todo(todoCreateRequestDto);
         Todo saveTodo = todoRepository.save(todo);
         TodoResponseDto todoResponseDto = new TodoResponseDto(saveTodo);
         return todoResponseDto;
@@ -32,16 +34,10 @@ public class TodoService {
     public List<TodoResponseDto> getTodos() {
         return todoRepository.findAllByOrderByModifiedAtDesc().stream().map(TodoResponseDto::new).toList();
     }
-
-    private Todo findTodo(Long id) {
-        return todoRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("선택한 일정은 존재하지 않습니다.")
-        );
-    }
     @Transactional
     public TodoResponseDto updateTodo(Long id, TodoUpdateRequestDto todoUpdateRequestDto) {
         Todo todo = findTodo(id);
-        if (todo.getPassword().equals(todoUpdateRequestDto.getPassword())){
+        if (Objects.equals(todo.getPassword(),todoUpdateRequestDto.getPassword())){
             todo.update(todoUpdateRequestDto);
             TodoResponseDto todoResponseDto = new TodoResponseDto(todo);
             return todoResponseDto;
@@ -51,11 +47,16 @@ public class TodoService {
     }
     public Long deleteTodo(Long id, TodoDeleteRequestDto todoDeleteRequestDto) {
         Todo todo = findTodo(id);
-        if (todo.getPassword().equals(todoDeleteRequestDto.getPassword())){
+        if (Objects.equals(todo.getPassword(),todoDeleteRequestDto.getPassword())){
             todoRepository.delete(todo);
             return id;
         } else{
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+    }
+    private Todo findTodo(Long id) {
+        return todoRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("선택한 일정은 존재하지 않습니다.")
+        );
     }
 }
