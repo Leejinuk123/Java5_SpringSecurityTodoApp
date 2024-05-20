@@ -9,7 +9,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "todo")
 @NoArgsConstructor
 public class Todo extends Timestamped{
@@ -24,6 +23,19 @@ public class Todo extends Timestamped{
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+
+    //Entity의 모든 필드에 대한 Setter를 만들면 위험하기 때문에 정말 필요한 필드에 대해서만 Setter를 만든다.
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Todo(TodoCreateRequestDto todoCreateRequestDto){
         this.title = todoCreateRequestDto.getTitle();
