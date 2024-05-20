@@ -3,6 +3,7 @@ package com.sparta.todo.entity;
 import com.sparta.todo.dto.request.TodoCreateRequestDto;
 import com.sparta.todo.dto.request.TodoUpdateRequestDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,10 +17,11 @@ public class Todo extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 50)
     private String title;
     @Column(name = "contents", nullable = true, length = 100)
     private String contents;
+    @Email
     @Column(name = "email", nullable = false)
     private String email;
     @Column(name = "password", nullable = false)
