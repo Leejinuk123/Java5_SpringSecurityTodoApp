@@ -37,22 +37,18 @@ public class TodoService {
     @Transactional
     public TodoResponseDto updateTodo(Long id, TodoUpdateRequestDto todoUpdateRequestDto) {
         Todo todo = findTodo(id);
-        if (Objects.equals(todo.getPassword(),todoUpdateRequestDto.getPassword())){
+        if (todo.checkPassword(todoUpdateRequestDto.getPassword())){
             todo.update(todoUpdateRequestDto);
             TodoResponseDto todoResponseDto = new TodoResponseDto(todo);
             return todoResponseDto;
-        } else{
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        } else throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
     public Long deleteTodo(Long id, TodoDeleteRequestDto todoDeleteRequestDto) {
         Todo todo = findTodo(id);
-        if (Objects.equals(todo.getPassword(),todoDeleteRequestDto.getPassword())){
+        if (todo.checkPassword(todoDeleteRequestDto.getPassword())){
             todoRepository.delete(todo);
             return id;
-        } else{
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        } else throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
     private Todo findTodo(Long id) {
         return todoRepository.findById(id).orElseThrow(() ->
