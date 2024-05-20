@@ -2,11 +2,9 @@ package com.sparta.todo.entity;
 
 import com.sparta.todo.dto.request.TodoCreateRequestDto;
 import com.sparta.todo.dto.request.TodoUpdateRequestDto;
-import com.sparta.todo.dto.response.TodoResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Objects;
 
@@ -26,12 +24,16 @@ public class Todo extends Timestamped{
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private TodoStatus status;
 
     public Todo(TodoCreateRequestDto todoCreateRequestDto){
         this.title = todoCreateRequestDto.getTitle();
         this.contents = todoCreateRequestDto.getContents();
         this.email = todoCreateRequestDto.getEmail();
         this.password = todoCreateRequestDto.getPassword();
+        this.status = TodoStatus.ACTIVE;
     }
     public void update(TodoUpdateRequestDto todoUpdateRequestDto){
         //Dirty Checking
@@ -39,7 +41,13 @@ public class Todo extends Timestamped{
         this.title = (todoUpdateRequestDto.getTitle());
         this.email = (todoUpdateRequestDto.getEmail());
     }
-    public boolean checkPassword(String password){
+    public void delete(){
+        this.status = TodoStatus.DELETED;
+    }
+    public boolean isPasswordValid(String password){
         return Objects.equals(this.getPassword(),password);
+    }
+    public boolean isDeleted() {
+        return this.status == TodoStatus.DELETED;
     }
 }
