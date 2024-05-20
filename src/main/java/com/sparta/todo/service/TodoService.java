@@ -45,7 +45,7 @@ public class TodoService {
     public TodoResponseDto updateTodo(Long id, TodoUpdateRequestDto todoUpdateRequestDto) {
         Todo todo = findTodo(id);
         if (todo.isDeleted()) throw new TodoAlreadyDeletedException("선택한 id의 일정 정보가 삭제되어 수정할 수 없습니다: " + id);
-        if (todo.isPasswordValid(todoUpdateRequestDto.getPassword())){
+        if (todo.isPasswordMatch(todoUpdateRequestDto.getPassword())){
             todo.update(todoUpdateRequestDto);
             TodoResponseDto todoResponseDto = new TodoResponseDto(todo);
             return todoResponseDto;
@@ -56,7 +56,7 @@ public class TodoService {
     public Long deleteTodo(Long id, TodoDeleteRequestDto todoDeleteRequestDto) {
         Todo todo = findTodo(id);
         if (todo.isDeleted()) throw new TodoAlreadyDeletedException("선택한 id의 일정 정보가 이미 삭제되어 삭제할 수 없습니다: " + id);
-        if (todo.isPasswordValid(todoDeleteRequestDto.getPassword())){
+        if (todo.isPasswordMatch(todoDeleteRequestDto.getPassword())){
             todo.delete();
             return id;
         }

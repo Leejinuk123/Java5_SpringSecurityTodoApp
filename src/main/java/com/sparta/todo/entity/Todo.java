@@ -46,7 +46,7 @@ public class Todo extends Timestamped{
     public void delete(){
         this.status = TodoStatus.DELETED;
     }
-    public boolean isPasswordValid(String password){
+    public boolean isPasswordMatch(String password){
         return Objects.equals(this.getPassword(),password);
     }
     public boolean isDeleted() {
