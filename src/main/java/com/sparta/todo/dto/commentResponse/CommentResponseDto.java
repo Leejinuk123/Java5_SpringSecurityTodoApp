@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CommentResponseDto {
-    private String userName;
+    private String username;
     private String content;
     private LocalDateTime createAt;
 
     public CommentResponseDto(Comment saveComment) {
-        this.userName = saveComment.getUserName();
+        this.username = saveComment.getUsername();
         this.content = saveComment.getContent();
         this.createAt = saveComment.getCreatedAt();
     }

@@ -7,10 +7,11 @@ import lombok.Getter;
 
 @Getter
 public class CommentCreateRequestDto {
-    @NotNull
+    @NotNull(message = "Todo ID는 필수 값입니다.")
     private Long todoId;
-    private String userName;
-    @NotBlank
-    @Size(max = 30)
+    @NotBlank(message = "사용자 이름은 필수 값입니다.")
+    private String username;
+    @NotBlank(message = "내용은 필수 값입니다.")
+    @Size(max = 30, message = "내용은 최대 30자까지 입력 가능합니다.")
     private String content;
 }
