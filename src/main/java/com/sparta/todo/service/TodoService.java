@@ -1,9 +1,9 @@
 package com.sparta.todo.service;
 
-import com.sparta.todo.dto.request.TodoCreateRequestDto;
-import com.sparta.todo.dto.request.TodoDeleteRequestDto;
-import com.sparta.todo.dto.request.TodoUpdateRequestDto;
-import com.sparta.todo.dto.response.TodoResponseDto;
+import com.sparta.todo.dto.todoRequest.TodoCreateRequestDto;
+import com.sparta.todo.dto.todoRequest.TodoDeleteRequestDto;
+import com.sparta.todo.dto.todoRequest.TodoUpdateRequestDto;
+import com.sparta.todo.dto.todoResponse.TodoResponseDto;
 import com.sparta.todo.entity.Todo;
 import com.sparta.todo.entity.TodoStatus;
 import com.sparta.todo.exception.IncorrectPasswordException;

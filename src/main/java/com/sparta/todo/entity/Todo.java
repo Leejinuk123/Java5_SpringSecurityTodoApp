@@ -1,12 +1,14 @@
 package com.sparta.todo.entity;
 
-import com.sparta.todo.dto.request.TodoCreateRequestDto;
-import com.sparta.todo.dto.request.TodoUpdateRequestDto;
+import com.sparta.todo.dto.todoRequest.TodoCreateRequestDto;
+import com.sparta.todo.dto.todoRequest.TodoUpdateRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +31,9 @@ public class Todo extends Timestamped{
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private TodoStatus status;
+
+    @OneToMany(mappedBy = "todo" , cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comment = new ArrayList<>();
 
     public Todo(TodoCreateRequestDto todoCreateRequestDto){
         this.title = todoCreateRequestDto.getTitle();

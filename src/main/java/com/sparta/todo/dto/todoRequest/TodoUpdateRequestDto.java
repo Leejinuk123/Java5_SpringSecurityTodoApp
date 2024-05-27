@@ -1,4 +1,4 @@
-package com.sparta.todo.dto.request;
+package com.sparta.todo.dto.todoRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

@@ -1,9 +1,9 @@
 package com.sparta.todo.controller;
 
-import com.sparta.todo.dto.request.TodoCreateRequestDto;
-import com.sparta.todo.dto.request.TodoDeleteRequestDto;
-import com.sparta.todo.dto.request.TodoUpdateRequestDto;
-import com.sparta.todo.dto.response.TodoResponseDto;
+import com.sparta.todo.dto.todoRequest.TodoCreateRequestDto;
+import com.sparta.todo.dto.todoRequest.TodoDeleteRequestDto;
+import com.sparta.todo.dto.todoRequest.TodoUpdateRequestDto;
+import com.sparta.todo.dto.todoResponse.TodoResponseDto;
 import com.sparta.todo.service.TodoService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
