@@ -96,6 +96,12 @@ public class JwtUtil {
         }
     }
 
+    // JWT를 Header에 추가
+    public void addJwtToHeader(String token, HttpServletResponse res) {
+        res.setHeader(AUTHORIZATION_HEADER, token);
+    }
+
+
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
