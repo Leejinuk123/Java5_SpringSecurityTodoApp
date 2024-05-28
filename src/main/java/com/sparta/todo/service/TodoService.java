@@ -5,7 +5,7 @@ import com.sparta.todo.dto.todoRequest.TodoDeleteRequestDto;
 import com.sparta.todo.dto.todoRequest.TodoUpdateRequestDto;
 import com.sparta.todo.dto.todoResponse.TodoResponseDto;
 import com.sparta.todo.entity.Todo;
-import com.sparta.todo.entity.TodoStatus;
+import com.sparta.todo.entity.TodoStatusEnum;
 import com.sparta.todo.exception.IncorrectPasswordException;
 import com.sparta.todo.exception.TodoAlreadyDeletedException;
 import com.sparta.todo.exception.TodoNotFoundException;
@@ -36,7 +36,7 @@ public class TodoService {
         return todoResponseDto;
     }
     public List<TodoResponseDto> getTodos() {
-        return todoRepository.findAllByStatusOrderByModifiedAtDesc(TodoStatus.ACTIVE)
+        return todoRepository.findAllByStatusOrderByModifiedAtDesc(TodoStatusEnum.ACTIVE)
                                 .stream()
                                 .map(TodoResponseDto::new)
                                 .toList();

@@ -34,7 +34,7 @@ public class CommentService {
     @Transactional
     public CommentResponseDto updateComment(CommentUpdateRequestDto updateRequestDto) {
         Comment comment = findComment(updateRequestDto.getTodoId(), updateRequestDto.getId());
-        if (!comment.isUserNameMatch(updateRequestDto.getUsername())){
+        if (!comment.isUsernameMatch(updateRequestDto.getUsername())){
             throw new UnauthorizedUserException("댓글의 작성자만 수정할 수 있습니다: "+ updateRequestDto.getUsername());
         }
         comment.update(updateRequestDto);
@@ -43,7 +43,7 @@ public class CommentService {
 
     public void deleteComment(CommentDeleteRequestDto deleteRequestDto) {
         Comment comment = findComment(deleteRequestDto.getTodoId(), deleteRequestDto.getId());
-        if (!comment.isUserNameMatch(deleteRequestDto.getUsername())){
+        if (!comment.isUsernameMatch(deleteRequestDto.getUsername())){
             throw new UnauthorizedUserException("댓글의 작성자만 삭제할 수 있습니다: "+ deleteRequestDto.getUsername());
         }
         commentRepository.delete(comment);

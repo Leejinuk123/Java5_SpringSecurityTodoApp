@@ -35,7 +35,7 @@ public class Comment extends Timestamped {
         this.content = updateRequestDto.getContent();
     }
 
-    public boolean isUserNameMatch(String userName){
+    public boolean isUsernameMatch(String userName){
         return Objects.equals(this.getUsername(),userName);
     }
 

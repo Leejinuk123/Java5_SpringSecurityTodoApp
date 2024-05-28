@@ -1,6 +1,6 @@
 package com.sparta.todo.entity;
 
-public enum TodoStatus {
+public enum TodoStatusEnum {
     ACTIVE,
     DELETED
 }

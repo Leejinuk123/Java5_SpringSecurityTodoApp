@@ -30,17 +30,22 @@ public class Todo extends Timestamped{
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private TodoStatus status;
+    private TodoStatusEnum status;
 
     @OneToMany(mappedBy = "todo" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comment = new ArrayList<>();
+
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     public Todo(TodoCreateRequestDto todoCreateRequestDto){
         this.title = todoCreateRequestDto.getTitle();
         this.contents = todoCreateRequestDto.getContents();
         this.email = todoCreateRequestDto.getEmail();
         this.password = todoCreateRequestDto.getPassword();
-        this.status = TodoStatus.ACTIVE;
+        this.status = TodoStatusEnum.ACTIVE;
+//        this.user = user;
     }
     public void update(TodoUpdateRequestDto todoUpdateRequestDto){
         //Dirty Checking
@@ -49,12 +54,12 @@ public class Todo extends Timestamped{
         this.email = (todoUpdateRequestDto.getEmail());
     }
     public void delete(){
-        this.status = TodoStatus.DELETED;
+        this.status = TodoStatusEnum.DELETED;
     }
     public boolean isPasswordMatch(String password){
         return Objects.equals(this.getPassword(),password);
     }
     public boolean isDeleted() {
-        return this.status == TodoStatus.DELETED;
+        return this.status == TodoStatusEnum.DELETED;
     }
 }
