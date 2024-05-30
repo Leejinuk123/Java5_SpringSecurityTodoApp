@@ -6,9 +6,11 @@ import com.sparta.todo.dto.commentRequest.CommentUpdateRequestDto;
 import com.sparta.todo.dto.commentResponse.CommentResponseDto;
 import com.sparta.todo.entity.Comment;
 import com.sparta.todo.entity.Todo;
+import com.sparta.todo.entity.User;
 import com.sparta.todo.exception.CommentNotFoundException;
 import com.sparta.todo.exception.TodoNotFoundException;
 import com.sparta.todo.exception.UnauthorizedUserException;
+import com.sparta.todo.exception.UserMismatchException;
 import com.sparta.todo.repository.CommentRepository;
 import com.sparta.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,29 +24,29 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final TodoRepository todoRepository;
 
-    public CommentResponseDto createComment(CommentCreateRequestDto createRequestDto) {
+    public CommentResponseDto createComment(CommentCreateRequestDto createRequestDto, User user) {
         Todo todo = todoRepository.findById(createRequestDto.getTodoId()).orElseThrow(
                 () -> new TodoNotFoundException("선택한 id로는 일정은 찾을 수 없습니다: " + createRequestDto.getTodoId())
         );
-        Comment comment = new Comment(createRequestDto, todo);
+        Comment comment = new Comment(createRequestDto, todo, user);
         Comment saveComment = commentRepository.save(comment);
         return new CommentResponseDto(saveComment);
     }
 
     @Transactional
-    public CommentResponseDto updateComment(CommentUpdateRequestDto updateRequestDto) {
+    public CommentResponseDto updateComment(CommentUpdateRequestDto updateRequestDto, User user) {
         Comment comment = findComment(updateRequestDto.getTodoId(), updateRequestDto.getId());
-        if (!comment.isUsernameMatch(updateRequestDto.getUsername())){
-            throw new UnauthorizedUserException("댓글의 작성자만 수정할 수 있습니다: "+ updateRequestDto.getUsername());
+        if (!comment.getUser().isUserMatch(user.getUsername())){
+            throw new UserMismatchException("다른 유저의 댓글은 수정할 수 없습니다. "+ user.getUsername());
         }
         comment.update(updateRequestDto);
         return new CommentResponseDto(comment);
     }
 
-    public void deleteComment(CommentDeleteRequestDto deleteRequestDto) {
+    public void deleteComment(CommentDeleteRequestDto deleteRequestDto, User user) {
         Comment comment = findComment(deleteRequestDto.getTodoId(), deleteRequestDto.getId());
-        if (!comment.isUsernameMatch(deleteRequestDto.getUsername())){
-            throw new UnauthorizedUserException("댓글의 작성자만 삭제할 수 있습니다: "+ deleteRequestDto.getUsername());
+        if (!comment.getUser().isUserMatch(user.getUsername())){
+            throw new UserMismatchException("다른 유저의 댓글은 삭제할 수 없습니다. "+ user.getUsername());
         }
         commentRepository.delete(comment);
     }
