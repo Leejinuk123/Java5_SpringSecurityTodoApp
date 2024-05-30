@@ -23,11 +23,10 @@ public class Todo extends Timestamped{
     private String title;
     @Column(name = "contents", nullable = true, length = 100)
     private String contents;
-    @Email
-    @Column(name = "email", nullable = false)
-    private String email;
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "username", nullable = false)
+    private String username;
+//    @Column(name = "password", nullable = false)
+//    private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private TodoStatusEnum status;
@@ -35,30 +34,30 @@ public class Todo extends Timestamped{
     @OneToMany(mappedBy = "todo" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comment = new ArrayList<>();
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Todo(TodoCreateRequestDto todoCreateRequestDto){
+    public Todo(TodoCreateRequestDto todoCreateRequestDto, User user){
         this.title = todoCreateRequestDto.getTitle();
         this.contents = todoCreateRequestDto.getContents();
-        this.email = todoCreateRequestDto.getEmail();
-        this.password = todoCreateRequestDto.getPassword();
+        this.username = user.getUsername();
         this.status = TodoStatusEnum.ACTIVE;
-//        this.user = user;
+        this.user = user;
+//        this.password = todoCreateRequestDto.getPassword();
     }
     public void update(TodoUpdateRequestDto todoUpdateRequestDto){
         //Dirty Checking
         this.contents = (todoUpdateRequestDto.getContents());
         this.title = (todoUpdateRequestDto.getTitle());
-        this.email = (todoUpdateRequestDto.getEmail());
+//        this.username = (todoUpdateRequestDto.getUsername());
     }
     public void delete(){
         this.status = TodoStatusEnum.DELETED;
     }
-    public boolean isPasswordMatch(String password){
-        return Objects.equals(this.getPassword(),password);
-    }
+//    public boolean isPasswordMatch(String password){
+//        return Objects.equals(this.getPassword(),password);
+//    }
     public boolean isDeleted() {
         return this.status == TodoStatusEnum.DELETED;
     }

@@ -6,16 +6,21 @@ import com.sparta.todo.dto.todoRequest.TodoUpdateRequestDto;
 import com.sparta.todo.dto.todoResponse.TodoResponseDto;
 import com.sparta.todo.entity.Todo;
 import com.sparta.todo.entity.TodoStatusEnum;
+import com.sparta.todo.entity.User;
 import com.sparta.todo.exception.IncorrectPasswordException;
 import com.sparta.todo.exception.TodoAlreadyDeletedException;
 import com.sparta.todo.exception.TodoNotFoundException;
+import com.sparta.todo.exception.UserMismatchException;
 import com.sparta.todo.repository.TodoRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
+@Slf4j(topic = "TodoService")
 public class TodoService {
     private final TodoRepository todoRepository;
 
@@ -23,8 +28,9 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public TodoResponseDto createTodo(TodoCreateRequestDto todoCreateRequestDto) {
-        Todo todo = new Todo(todoCreateRequestDto);
+    public TodoResponseDto createTodo(TodoCreateRequestDto todoCreateRequestDto, User user) {
+        log.info(user.getUsername());
+        Todo todo = new Todo(todoCreateRequestDto, user);
         Todo saveTodo = todoRepository.save(todo);
         TodoResponseDto todoResponseDto = new TodoResponseDto(saveTodo);
         return todoResponseDto;
@@ -42,25 +48,29 @@ public class TodoService {
                                 .toList();
     }
     @Transactional
-    public TodoResponseDto updateTodo(Long id, TodoUpdateRequestDto todoUpdateRequestDto) {
+    public TodoResponseDto updateTodo(Long id, TodoUpdateRequestDto todoUpdateRequestDto, User user) {
         Todo todo = findTodo(id);
+
         if (todo.isDeleted()) throw new TodoAlreadyDeletedException("선택한 id의 일정 정보가 삭제되어 수정할 수 없습니다: " + id);
-        if (todo.isPasswordMatch(todoUpdateRequestDto.getPassword())){
+
+        if (todo.getUser().isUserMatch(user.getUsername())){
             todo.update(todoUpdateRequestDto);
             TodoResponseDto todoResponseDto = new TodoResponseDto(todo);
             return todoResponseDto;
         }
-        throw new IncorrectPasswordException("선택한 id의 비밀번호와 일치하지 않습니다: " + id);
+        throw new UserMismatchException("다른 유저의 일정은 수정할 수 없습니다. " + id);
     }
     @Transactional
-    public Long deleteTodo(Long id, TodoDeleteRequestDto todoDeleteRequestDto) {
+    public Long deleteTodo(Long id, TodoDeleteRequestDto todoDeleteRequestDto, User user) {
         Todo todo = findTodo(id);
+
         if (todo.isDeleted()) throw new TodoAlreadyDeletedException("선택한 id의 일정 정보가 이미 삭제되어 삭제할 수 없습니다: " + id);
-        if (todo.isPasswordMatch(todoDeleteRequestDto.getPassword())){
+
+        if (todo.getUser().isUserMatch(user.getUsername())){
             todo.delete();
             return id;
         }
-        throw new IncorrectPasswordException("선택한 id의 비밀번호와 일치하지 않습니다: " + id);
+        throw new UserMismatchException("다른 유저의 일정은 삭제할 수 없습니다. " + id);
     }
     private Todo findTodo(Long id) {
         return todoRepository.findById(id).orElseThrow(() ->
