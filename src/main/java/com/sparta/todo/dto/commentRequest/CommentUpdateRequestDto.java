@@ -7,11 +7,11 @@ import lombok.Getter;
 
 @Getter
 public class CommentUpdateRequestDto {
-    @NotNull(message = "Todo ID는 필수 값입니다.")
+    @NotNull(message = "todoId 는 필수 값입니다.")
     private Long todoId;
-    @NotNull(message = "Comment ID는 필수 값입니다.")
-    private Long id;
-    @NotBlank(message = "내용은 필수 값입니다.")
-    @Size(max = 30)
+    @NotBlank(message = "content 는 필수 값입니다.")
+    @Size(max = 30, message = "content 는 30자를 넘을 수 없습니다.")
     private String content;
+    @NotNull(message = "id 는 필수 값입니다.")
+    private Long id;
 }

@@ -1,13 +1,11 @@
 package com.sparta.todo.service;
 
 import com.sparta.todo.dto.todoRequest.TodoCreateRequestDto;
-import com.sparta.todo.dto.todoRequest.TodoDeleteRequestDto;
 import com.sparta.todo.dto.todoRequest.TodoUpdateRequestDto;
 import com.sparta.todo.dto.todoResponse.TodoResponseDto;
 import com.sparta.todo.entity.Todo;
 import com.sparta.todo.entity.TodoStatusEnum;
 import com.sparta.todo.entity.User;
-import com.sparta.todo.exception.IncorrectPasswordException;
 import com.sparta.todo.exception.TodoAlreadyDeletedException;
 import com.sparta.todo.exception.TodoNotFoundException;
 import com.sparta.todo.exception.UserMismatchException;
@@ -17,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Slf4j(topic = "TodoService")
@@ -61,7 +58,7 @@ public class TodoService {
         throw new UserMismatchException("다른 유저의 일정은 수정할 수 없습니다. " + id);
     }
     @Transactional
-    public Long deleteTodo(Long id, TodoDeleteRequestDto todoDeleteRequestDto, User user) {
+    public Long deleteTodo(Long id, User user) {
         Todo todo = findTodo(id);
 
         if (todo.isDeleted()) throw new TodoAlreadyDeletedException("선택한 id의 일정 정보가 이미 삭제되어 삭제할 수 없습니다: " + id);

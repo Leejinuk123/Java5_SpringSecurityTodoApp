@@ -62,10 +62,8 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/user/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-//                        .requestMatchers(HttpMethod.GET, "/api/comment").permitAll() // GET 요청 허용
-//                        .requestMatchers(HttpMethod.GET, "/api/todos/**").permitAll() // GET 요청 허용
-//                        .requestMatchers("/api/todos/**").authenticated()
-//                        .requestMatchers("/api/comment/**").authenticated() // 다른 모든 /api/comment/** 요청 인증 필요
+                        .requestMatchers(HttpMethod.GET, "/api/comment/**").permitAll() // GET 요청 허용
+                        .requestMatchers(HttpMethod.GET, "/api/todos/**").permitAll() // GET 요청 허용
                         .anyRequest().authenticated() // 그 외 모든 요청 인증 처리
         );
 
