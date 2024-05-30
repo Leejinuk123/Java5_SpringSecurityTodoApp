@@ -25,7 +25,6 @@ public class TodoController {
 
     @PostMapping("/todos")
     public TodoResponseDto createTodo(@Valid @RequestBody TodoCreateRequestDto todoCreateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-//        log.info(userDetails.getUsername());
         return todoService.createTodo(todoCreateRequestDto, userDetails.getUser());
     }
     @GetMapping("/todos")

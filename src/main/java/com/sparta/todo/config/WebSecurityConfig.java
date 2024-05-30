@@ -1,5 +1,6 @@
 package com.sparta.todo.config;
 
+import com.sparta.todo.exception.CustomAuthenticationEntryPoint;
 import com.sparta.todo.jwt.JwtUtil;
 import com.sparta.todo.security.JwtAuthenticationFilter;
 import com.sparta.todo.security.JwtAuthorizationFilter;
@@ -8,12 +9,14 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -67,12 +70,15 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated() // 그 외 모든 요청 인증 처리
         );
 
-        http.formLogin((formLogin) ->
-                formLogin
-                        .loginPage("/api/user/login-page").permitAll()
-//                        .defaultSuccessUrl("/api/todos", true)
-                        .failureUrl("/api/user/login-page?error=true")
-        );
+        http.exceptionHandling(auth -> {
+                    auth.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+                });
+
+//        http.formLogin((formLogin) ->
+//                formLogin
+//                        .loginPage("/api/user/login-page").permitAll()
+//                        .failureUrl("/api/user/login-page?error=true")
+//        );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);

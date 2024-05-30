@@ -1,16 +1,12 @@
 package com.sparta.todo.service;
 
-import com.sparta.todo.dto.userRequestDto.LoginRequestDto;
 import com.sparta.todo.dto.userRequestDto.SignupRequestDto;
 import com.sparta.todo.entity.User;
 import com.sparta.todo.entity.UserRoleEnum;
-import com.sparta.todo.exception.IncorrectPasswordException;
 import com.sparta.todo.jwt.JwtUtil;
 import com.sparta.todo.repository.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +19,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
     // ADMIN_TOKEN
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
