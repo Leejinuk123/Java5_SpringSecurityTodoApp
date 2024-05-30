@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+@Slf4j(topic = "UserService")
 public class UserService {
 
     private final UserRepository userRepository;
@@ -53,27 +53,28 @@ public class UserService {
         // 사용자 등록
         User user = new User(username, password, nickname, role);
         userRepository.save(user);
+        log.info("회원가입 완료");
     }
 
-    public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUsername();
-        String password = requestDto.getPassword();
-
-        //사용자 확인
-        User user = userRepository.findByUsername(username).orElseThrow(
-                ()-> {
-                    log.error("등록된 사용자가 없습니다. username: {}", username);
-                    return new UsernameNotFoundException("등록된 사용자가 없습니다.");
-                }
-        );
-
-        //비밀번호 확인
-        if (!passwordEncoder.matches(password, user.getPassword())){
-            log.error("비밀번호가 일치하지 않습니다. username: {}", username);
-            throw new IncorrectPasswordException("비밀번호가 일치하지 않습니다.");
-        }
-
-        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
-        jwtUtil.addJwtToHeader(token, res);
-    }
+//    public void login(LoginRequestDto requestDto, HttpServletResponse res) {
+//        String username = requestDto.getUsername();
+//        String password = requestDto.getPassword();
+//
+//        //사용자 확인
+//        User user = userRepository.findByUsername(username).orElseThrow(
+//                ()-> {
+//                    log.error("등록된 사용자가 없습니다. username: {}", username);
+//                    return new UsernameNotFoundException("등록된 사용자가 없습니다.");
+//                }
+//        );
+//
+//        //비밀번호 확인
+//        if (!passwordEncoder.matches(password, user.getPassword())){
+//            log.error("비밀번호가 일치하지 않습니다. username: {}", username);
+//            throw new IncorrectPasswordException("비밀번호가 일치하지 않습니다.");
+//        }
+//
+//        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
+//        jwtUtil.addJwtToHeader(token, res);
+//    }
 }

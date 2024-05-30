@@ -25,14 +25,4 @@ public class UserController {
         userService.signup(requestDto);
         return ResponseEntity.status(HttpStatus.OK).body("회원가입이 되었습니다.");
     }
-
-    @PostMapping("/user/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res){
-        try {
-            userService.login(requestDto, res);
-            return ResponseEntity.status(HttpStatus.OK).body("로그인이 되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 실패했습니다.");
-        }
-    }
 }
